@@ -1,5 +1,10 @@
 <?php
 
+// Comparison function for sorting by count (descending)
+function cmpCount($a, $b) {
+    return $b['count'] - $a['count'];
+}
+
 // Read a CSV and return an array
 function readCSV($file,$delimiter=';',$enclosure='"'){
 	$array = array();

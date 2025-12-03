@@ -110,18 +110,17 @@ foreach ($parserules as $domain => $parserule){
 
     // check if domain in test array
     $url = false;
-    foreach ($shop_test_url_array as $url){
-        if (stristr($url,$domain)){
+    foreach ($shop_test_url_array as $test_url){
+        if (stristr($test_url, $domain)){
+            $url = $test_url;
             break;
         }
-
     }
 
+    $output = '';
     if ($url){
         $parser = new parseSite($url,$parserules,$debug);
         $metadata_array = $parser->retrieve_metadata();
-
-        $output = '';
         if (isset($metadata_array['shop']) && isset($metadata_array['title']) && isset($metadata_array['image']) && isset($metadata_array['price'])) {
             $output .= sprintf("%-30s", $metadata_array['shop']);
             // check if shop has been accepted
@@ -184,5 +183,5 @@ foreach ($parserules as $domain => $parserule){
     echo $output;
 }
 
-$shops_configured_json = json_encode($shops_configured);
-file_put_contents($jsonfile, $shops_configured_json, FILE_APPEND | LOCK_EX);
+$shops_configured_json = json_encode($shops_configured, JSON_PRETTY_PRINT);
+file_put_contents($jsonfile, $shops_configured_json, LOCK_EX);
